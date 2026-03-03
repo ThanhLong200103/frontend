@@ -1,0 +1,4 @@
+interface IdCart
+{
+    id:string
+}
