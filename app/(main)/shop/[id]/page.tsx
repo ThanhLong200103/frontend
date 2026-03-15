@@ -12,6 +12,8 @@ import followShopservice from "@/services/shop/follow/follow.service";
 import checkFollow from "@/services/shop/follow/checkFollow.service";
 import { toast } from "react-toastify";
 import AllAddress from "../../addressShop/page";
+import AddProduct from "../../product/store/page";
+import ProductCard from "../../product/ProductCard";
 
 export default function ShowShop() {
   const [show, setShow] = useState(false);
@@ -21,11 +23,15 @@ export default function ShowShop() {
   const [statusFollow, setStatusFollow] = useState("");
   const [textFollow, setTextFollow] = useState("");
   const [showAddressAll, setShowAddressAll] = useState(false);
+  const[showAddProduct ,setShowAddProduct] = useState(false)
+  const[products ,setProducts] = useState([])
   const params = useParams();
   const id = params.id as string;
   const shops = showShop({ id });
 
-  // console.log(shops);
+  console.log(shops);
+ 
+  console.log(products);
   const address = showtrueAddressService({ id });
   const { userFollow, isLoading, error } = checkFollow({ id });
   // console.log(userFollow);
@@ -48,13 +54,13 @@ export default function ShowShop() {
 
   useEffect(() => {
     setFollow($total);
-
+    setProducts(shops.products)
     if (userFollow === true) {
       setTextFollow("Hủy follow");
     } else if (userFollow === false) {
       setTextFollow("Follow");
     }
-  }, [$total, userFollow]);
+  }, [$total, userFollow ]);
 
   // console.log(address);
   return (
@@ -83,6 +89,12 @@ export default function ShowShop() {
               }}
             >
               Delete
+            </Button>
+            <Button 
+            onClick={()=>{
+              setShowAddProduct(true)
+            }}>
+              Thêm sản phẩm
             </Button>
           </Row>
         </Container>
@@ -162,6 +174,20 @@ export default function ShowShop() {
           <Row></Row>
         </Container>
       </Container>
+      <Container className="mt-5">
+         <Col  className="d-flex justify-content-center ">
+              
+        
+              {<Row>
+                {products?.map((p: any) => (
+                  <Col md={3} key={p.id} className="mb-4">
+                   <ProductCard p={p} />
+                  </Col>
+                ))}
+              </Row>  }
+        
+            </Col>
+      </Container>
       <UpdateShop
         show={show}
         setShow={setShow}
@@ -175,6 +201,7 @@ export default function ShowShop() {
         id={id}
       ></DeleteShop>
       <AllAddress showAddressAll={showAddressAll} setShowAddressAll = {setShowAddressAll} id = {id}></AllAddress>
+      <AddProduct showAddProduct = {showAddProduct} setShowAddProduct = {setShowAddProduct}></AddProduct>
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function page() {
   const {data2} = showProductCategorie({selectedId})
   // console.log(data2)
   const products = data2 ??[];
-  // console.log(products)
+  console.log(products)
   const cateChildren = data.children
   // console.log(cateChildren);
   useEffect(
